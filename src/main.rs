@@ -30,19 +30,24 @@ fn main() {
 
         if mus_file != new_mus_file {
             mus_file = new_mus_file;
-            let mut file = File::open(music_dir.join(&mus_file).with_extension("lrc")).unwrap();
 
-            contents.clear();
-            file.read_to_string(&mut contents).unwrap();
-            lyrics = Lyrics::from_str(&contents)
-                .unwrap()
-                .get_timed_lines()
-                .to_owned()
-                .iter().rev()
-                .map(|(t, s)| (t.get_timestamp(), s.to_string()))
-                .collect::<Vec<(i64, String)>>();
+            if let Ok(mut file) = File::open(
+                music_dir.join(&mus_file).with_extension("lrc")
+            ) {
+                contents.clear();
+                file.read_to_string(&mut contents).unwrap();
+                lyrics = Lyrics::from_str(&contents)
+                    .unwrap()
+                    .get_timed_lines()
+                    .to_owned()
+                    .iter().rev()
+                    .map(|(t, s)| (t.get_timestamp(), s.to_string()))
+                    .collect::<Vec<(i64, String)>>();
 
-            println!("\n\n");
+                println!("\n\n");
+            } else {
+                continue;
+            }
         }
 
         let elapsed = conn.status()
