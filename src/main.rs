@@ -8,6 +8,8 @@ use std::{
 use mpd::Client;
 use lrc::Lyrics;
 
+const SHIFT: i64 = 1000; // ms before audio
+
 fn main() {
     let music_dir = Path::new("/home/lucas/Musique");
 
@@ -57,7 +59,7 @@ fn main() {
             .num_milliseconds();
 
         while let Some(l) = lyrics.last() {
-            if l.0 <= elapsed {
+            if l.0 <= elapsed + SHIFT {
                 println!("{}", lyrics.pop().unwrap().1);
             } else {
                 break;
