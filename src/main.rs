@@ -41,7 +41,6 @@ fn main() {
                 lyrics = Lyrics::from_str(&contents)
                     .unwrap()
                     .get_timed_lines()
-                    .to_owned()
                     .iter().rev()
                     .map(|(t, s)| (t.get_timestamp(), s.to_string()))
                     .collect::<Vec<(i64, String)>>();
